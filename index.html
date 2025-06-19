@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name • Video Creator</title>
+    <title>Commando Group</title>
     <style>
         * {
             margin: 0;
@@ -12,309 +12,331 @@
         }
 
         body {
-            background-color: #f8f8f8;
-            color: #333;
-            font-family: 'Arial', sans-serif;
-            line-height: 1.4;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 40px;
+            padding: 60px 20px;
         }
 
-        .header {
-            padding: 40px 0 60px 0;
-            border-bottom: 1px solid #ddd;
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 80px;
+            letter-spacing: -0.02em;
+        }
+
+        .section-title {
+            font-size: 0.875rem;
+            font-weight: 400;
             margin-bottom: 40px;
+            color: #999;
+            letter-spacing: 0.05em;
         }
 
-        .header h1 {
-            font-size: 2rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-
-        .nav {
-            display: flex;
-            gap: 0;
-            flex-wrap: wrap;
-        }
-
-        .nav-item {
-            background-color: #333;
-            color: white;
-            text-decoration: none;
-            padding: 12px 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: background-color 0.3s ease;
-            border-right: 1px solid #555;
-        }
-
-        .nav-item:first-child {
-            border-left: 1px solid #555;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background-color: #555;
-        }
-
-        .contact-nav {
-            margin-left: auto;
-            display: flex;
-            gap: 0;
-        }
-
-        .social-icon {
-            background-color: #333;
-            color: white;
-            text-decoration: none;
-            padding: 12px 15px;
-            font-size: 0.9rem;
-            transition: background-color 0.3s ease;
-            border-right: 1px solid #555;
-        }
-
-        .social-icon:hover {
-            background-color: #555;
-        }
-
-        .video-grid {
+        .projects-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 40px;
+            gap: 20px;
             margin-bottom: 80px;
         }
 
-        .video-item {
-            opacity: 0;
-            animation: fadeIn 0.8s ease-out forwards;
-            animation-delay: var(--delay, 0s);
-        }
-
-        .video-wrapper {
+        .project-item {
             position: relative;
-            width: 100%;
-            height: 400px;
-            margin-bottom: 20px;
             overflow: hidden;
             cursor: pointer;
+            background-color: #2a2a2a;
+            aspect-ratio: 16/10;
             transition: transform 0.3s ease;
         }
 
-        .video-wrapper:hover {
+        .project-item:hover {
             transform: scale(1.02);
         }
 
-        .video-wrapper iframe {
+        .project-item video {
             width: 100%;
             height: 100%;
-            border: none;
             object-fit: cover;
         }
 
-        .video-thumbnail {
+        .project-item .thumbnail {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
 
-        .video-info {
-            padding: 15px 0;
-        }
-
-        .video-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-            color: #333;
-        }
-
-        .video-meta {
-            color: #666;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            letter-spacing: 0.5px;
-        }
-
-        .video-meta .director {
-            font-weight: bold;
-        }
-
-        .share-link {
-            display: inline-block;
-            background-color: #1da1f2;
-            color: white;
-            text-decoration: none;
+        .project-label {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: #ffffff;
+            background-color: rgba(0, 0, 0, 0.7);
             padding: 8px 16px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 10px;
-            transition: background-color 0.3s ease;
+            border-radius: 4px;
+            backdrop-filter: blur(10px);
+            pointer-events: none;
         }
 
-        .share-link:hover {
-            background-color: #0d8bd9;
+        /* Video modal */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
         }
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
+        .video-modal.active {
+            display: flex;
         }
 
+        .video-modal video {
+            max-width: 90%;
+            max-height: 90%;
+            cursor: default;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            font-size: 3rem;
+            color: #ffffff;
+            cursor: pointer;
+            z-index: 1001;
+            transition: opacity 0.3s ease;
+        }
+
+        .close-modal:hover {
+            opacity: 0.7;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .container {
-                padding: 0 20px;
+                padding: 40px 15px;
             }
 
-            .video-grid {
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 50px;
+            }
+
+            .projects-grid {
                 grid-template-columns: 1fr;
-                gap: 30px;
+                gap: 15px;
             }
 
-            .nav {
-                flex-direction: column;
+            .project-label {
+                font-size: 1rem;
+                bottom: 15px;
+                left: 15px;
             }
 
-            .contact-nav {
-                margin-left: 0;
-                margin-top: 10px;
-            }
-
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .video-wrapper {
-                height: 250px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .nav-item, .social-icon {
-                padding: 10px 15px;
-                font-size: 0.8rem;
+            .close-modal {
+                top: 20px;
+                right: 20px;
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h1>Your Name • Video Creator</h1>
+        <h1>Commando Group</h1>
+        
+        <div class="section-title">Design Studio</div>
+        
+        <div class="section-title">Selected Projects</div>
+        
+        <div class="projects-grid">
+            <!-- Project 1 -->
+            <div class="project-item" data-video="video1.mp4">
+                <img src="thumbnail1.jpg" alt="" class="thumbnail">
+                <div class="project-label">Nasdaq Eesti AS</div>
+            </div>
             
-            <nav class="nav">
-                <a href="#latest-work" class="nav-item active">Latest Work</a>
-                <a href="https://twitter.com/yourusername" target="_blank" class="nav-item">X</a>
-                <a href="#about" class="nav-item">About Me</a>
-            </nav>
-        </header>
-
-        <div class="video-grid">
-            <!-- Video Item 1 -->
-            <div class="video-item" style="--delay: 0.1s">
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
-                            title="Sample Video 1" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-
+            <!-- Project 2 -->
+            <div class="project-item" data-video="video2.mp4">
+                <img src="thumbnail2.jpg" alt="" class="thumbnail">
+                <div class="project-label">Don Martin</div>
             </div>
-
-            <!-- Video Item 2 -->
-            <div class="video-item" style="--delay: 0.2s">
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" 
-                            title="Sample Video 2" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-
+            
+            <!-- Project 3 -->
+            <div class="project-item" data-video="video3.mp4">
+                <img src="thumbnail3.jpg" alt="" class="thumbnail">
+                <div class="project-label">Sirri Muktedir</div>
             </div>
-
-            <!-- Video Item 3 -->
-            <div class="video-item" style="--delay: 0.3s">
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/kJQP7kiw5Fk" 
-                            title="Sample Video 3" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-
+            
+            <!-- Project 4 -->
+            <div class="project-item" data-video="video4.mp4">
+                <img src="thumbnail4.jpg" alt="" class="thumbnail">
+                <div class="project-label">Orelove</div>
             </div>
-
-            <!-- Video Item 4 -->
-            <div class="video-item" style="--delay: 0.4s">
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/L_jWHffIx5E" 
-                            title="Sample Video 4" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-
+            
+            <!-- Project 5 -->
+            <div class="project-item" data-video="video5.mp4">
+                <img src="thumbnail5.jpg" alt="" class="thumbnail">
+                <div class="project-label">One Infrastruktuur</div>
             </div>
-
-            <!-- Video Item 5 -->
-            <div class="video-item" style="--delay: 0.5s">
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/hTWKbfoikeg" 
-                            title="Sample Video 5" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-
+            
+            <!-- Project 6 -->
+            <div class="project-item" data-video="video6.mp4">
+                <img src="thumbnail6.jpg" alt="" class="thumbnail">
+                <div class="project-label">Youthspotterz Võrdsõn</div>
             </div>
-
-            <!-- Video Item 6 -->
-            <div class="video-item" style="--delay: 0.6s">
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/fJ9rUzIMcZQ" 
-                            title="Sample Video 6" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-
+            
+            <!-- Project 7 -->
+            <div class="project-item" data-video="video7.mp4">
+                <img src="thumbnail7.jpg" alt="" class="thumbnail">
+                <div class="project-label">Center Porto</div>
+            </div>
+            
+            <!-- Project 8 -->
+            <div class="project-item" data-video="video8.mp4">
+                <img src="thumbnail8.jpg" alt="" class="thumbnail">
+                <div class="project-label">Hvaldiramitest</div>
+            </div>
+            
+            <!-- Project 9 -->
+            <div class="project-item" data-video="video9.mp4">
+                <img src="thumbnail9.jpg" alt="" class="thumbnail">
+                <div class="project-label">Sünalaudaega</div>
+            </div>
+            
+            <!-- Project 10 -->
+            <div class="project-item" data-video="video10.mp4">
+                <img src="thumbnail10.jpg" alt="" class="thumbnail">
+                <div class="project-label">Entra ASA</div>
+            </div>
+            
+            <!-- Project 11 -->
+            <div class="project-item" data-video="video11.mp4">
+                <img src="thumbnail11.jpg" alt="" class="thumbnail">
+                <div class="project-label">Mette Møller</div>
+            </div>
+            
+            <!-- Project 12 -->
+            <div class="project-item" data-video="video12.mp4">
+                <img src="thumbnail12.jpg" alt="" class="thumbnail">
+                <div class="project-label">AFF</div>
+            </div>
+            
+            <!-- Project 13 -->
+            <div class="project-item" data-video="video13.mp4">
+                <img src="thumbnail13.jpg" alt="" class="thumbnail">
+                <div class="project-label">Kultuurbyret Mesén</div>
+            </div>
+            
+            <!-- Project 14 -->
+            <div class="project-item" data-video="video14.mp4">
+                <img src="thumbnail14.jpg" alt="" class="thumbnail">
+                <div class="project-label">Le Beckett</div>
+            </div>
+            
+            <!-- Project 15 -->
+            <div class="project-item" data-video="video15.mp4">
+                <img src="thumbnail15.jpg" alt="" class="thumbnail">
+                <div class="project-label">Teknologirâdet</div>
+            </div>
+            
+            <!-- Project 16 -->
+            <div class="project-item" data-video="video16.mp4">
+                <img src="thumbnail16.jpg" alt="" class="thumbnail">
+                <div class="project-label">Thomas Groop</div>
+            </div>
+            
+            <!-- Project 17 -->
+            <div class="project-item" data-video="video17.mp4">
+                <img src="thumbnail17.jpg" alt="" class="thumbnail">
+                <div class="project-label">Kroha Interaksjoalitet</div>
+            </div>
+            
+            <!-- Project 18 -->
+            <div class="project-item" data-video="video18.mp4">
+                <img src="thumbnail18.jpg" alt="" class="thumbnail">
+                <div class="project-label">Matmisjon</div>
+            </div>
+            
+            <!-- Project 19 -->
+            <div class="project-item" data-video="video19.mp4">
+                <img src="thumbnail19.jpg" alt="" class="thumbnail">
+                <div class="project-label">Mira Administradoorselvskap</div>
+            </div>
+            
+            <!-- Project 20 -->
+            <div class="project-item" data-video="video20.mp4">
+                <img src="thumbnail20.jpg" alt="" class="thumbnail">
+                <div class="project-label">Iselin Stenso</div>
+            </div>
+            
+            <!-- Project 21 -->
+            <div class="project-item" data-video="video21.mp4">
+                <img src="thumbnail21.jpg" alt="" class="thumbnail">
+                <div class="project-label">VIS-A-VIS</div>
+            </div>
+            
+            <!-- Project 22 -->
+            <div class="project-item" data-video="video22.mp4">
+                <img src="thumbnail22.jpg" alt="" class="thumbnail">
+                <div class="project-label">Norwegian Forest Products</div>
             </div>
         </div>
     </div>
 
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+        <span class="close-modal" onclick="closeVideo()">&times;</span>
+        <video id="modalVideo" controls autoplay></video>
+    </div>
+
     <script>
-        // Navigation interaction
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Remove active class from all nav items
-                document.querySelectorAll('.nav-item').forEach(nav => {
-                    nav.classList.remove('active');
-                });
-                
-                // Add active class to clicked item
-                this.classList.add('active');
+        const projectItems = document.querySelectorAll('.project-item');
+        const videoModal = document.getElementById('videoModal');
+        const modalVideo = document.getElementById('modalVideo');
+
+        projectItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const videoSrc = this.getAttribute('data-video');
+                modalVideo.src = videoSrc;
+                videoModal.classList.add('active');
+                modalVideo.play();
             });
         });
 
-        // Video hover effects
-        document.querySelectorAll('.video-wrapper').forEach(wrapper => {
-            wrapper.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.02)';
-            });
-            
-            wrapper.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
-            });
+        function closeVideo() {
+            videoModal.classList.remove('active');
+            modalVideo.pause();
+            modalVideo.src = '';
+        }
+
+        // Close modal when clicking outside the video
+        videoModal.addEventListener('click', function(e) {
+            if (e.target === videoModal) {
+                closeVideo();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && videoModal.classList.contains('active')) {
+                closeVideo();
+            }
         });
     </script>
 </body>
